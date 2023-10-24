@@ -7,23 +7,49 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+class User(Base):
+    __tablename__ = 'users'
+    id=Column(Integer(), primary_key=True)
+    username=Column(String(30), nullable=False, unique=True)
+    name =Column(String(80), nullable=False)
+    lastname=Column(String(80), nullable=False)
+    age=Column(Integer(), nullable=True)
+    email=Column(String(80), nullable=True)
+    country=Column(String(60), nullable=True)
+    posts = relationship('Post', backref='users')
+    comments = relationship('Comment', backref='users')
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+
+  
+
+class Post(Base):
+    __tablename__ = 'posts'
+    id = Column(Integer(), primary_key=True)
+    user_id= Column(Integer(), ForeignKey('user.id'))
+    content= Column(String(), nullable=False)
+    saved = relationship('saved')
+
+
+class Media(Base):
+    __tablename__= 'media'
+    id= Column(Integer(), primary_key=True)
+    type= Column(String(30), nullable=False)
+    user_id= Column(Integer(), ForeignKey('user.id'))
+
+class Saved(Base):
+    __tablename__='saved'
+    id=Column(Integer(), primary_key=True)
+    post_id= Column(Integer(), ForeignKey('post.id'))
+    media_id= Column(Integer(), ForeignKey('media.id'))
+
+class Comment(Base):
+    __tablename__= 'comments'
+    id= Column(Integer(), primary_key=True)
+    comment= Column(String(250), nullable=False)
+    user_id= Column(Integer(), ForeignKey('user.id'))
+    post_id= Column(Integer(), ForeignKey('post.id'))
+    
+    
 
     def to_dict(self):
         return {}
