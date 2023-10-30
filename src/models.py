@@ -25,7 +25,7 @@ class User(Base):
 class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer(), primary_key=True)
-    user_id= Column(Integer(), ForeignKey('user.id'))
+    user_id= Column(Integer(), ForeignKey('users.id'))
     content= Column(String(), nullable=False)
     saved = relationship('saved')
 
@@ -34,20 +34,20 @@ class Media(Base):
     __tablename__= 'media'
     id= Column(Integer(), primary_key=True)
     type= Column(String(30), nullable=False)
-    user_id= Column(Integer(), ForeignKey('user.id'))
+    user_id= Column(Integer(), ForeignKey('users.id'))
 
 class Saved(Base):
     __tablename__='saved'
     id=Column(Integer(), primary_key=True)
-    post_id= Column(Integer(), ForeignKey('post.id'))
+    post_id= Column(Integer(), ForeignKey('posts.id'))
     media_id= Column(Integer(), ForeignKey('media.id'))
 
 class Comment(Base):
     __tablename__= 'comments'
     id= Column(Integer(), primary_key=True)
     comment= Column(String(250), nullable=False)
-    user_id= Column(Integer(), ForeignKey('user.id'))
-    post_id= Column(Integer(), ForeignKey('post.id'))
+    user_id= Column(Integer(), ForeignKey('users.id'))
+    post_id= Column(Integer(), ForeignKey('posts.id'))
     
     
 
